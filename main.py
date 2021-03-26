@@ -24,9 +24,9 @@ class Pet:
         self.root.overrideredirect(True) # remove UI
         self.root.wm_attributes('-transparentcolor','black') # transparent bg
         self.root.attributes('-topmost', True) # put window on top
+        self.root.bind("<Button-1>", self.onLeftClick)
+        self.root.bind("<Key>", self.onKeyPress)
         self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
-        self.label.bind("<Button-1>", self.on_left_click)
-        self.label.bind("<Button-3>", self.on_right_click)
         self.label.pack()
         
         screen_width = self.root.winfo_screenwidth() # width of the entire screen
@@ -54,17 +54,18 @@ class Pet:
         i += 1
         if i == len(animation_arr):
             # reached end of this animation, decide on the next animation
-            next_animation = self.get_next_animation(curr_animation)
+            next_animation = self.getNextAnimation(curr_animation)
             self.root.after(self.delay, self.update, 0, next_animation)
         else:
             self.root.after(self.delay, self.update, i, curr_animation)
 
 
-    def on_left_click(self, event):
+    def onLeftClick(self, event):
         print("detected left click")
 
-    def on_right_click(self, event):
-        self.quit()        
+    def onKeyPress(self, event):
+        if event.char in ('q', 'Q'):
+            self.quit()
     
     def move_window(self, curr_animation):
         if curr_animation == 'walk_left':
@@ -78,7 +79,7 @@ class Pet:
         self.root.geometry('%dx%d+%d+%d' % (100, 100, self.curr_width, self.curr_height))
     
 
-    def get_next_animation(self, curr_animation):
+    def getNextAnimation(self, curr_animation):
         if curr_animation == 'idle':
             return random.choice(['idle', 'idle_to_sleep', 'walk_left', 'walk_right'])
         elif curr_animation == 'idle_to_sleep':
@@ -103,5 +104,7 @@ class Pet:
 
 
 if __name__ == '__main__':
+    print('Initializing your desktop pet...')
+    print('To quit, left click on the pet then press Q')
     pet = Pet()
     pet.run()
