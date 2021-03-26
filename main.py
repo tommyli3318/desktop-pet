@@ -26,7 +26,9 @@ class Pet:
         if system() == 'Windows':
             self.root.wm_attributes('-transparent','black')
         else: # platform is Mac/Linux
+            # https://stackoverflow.com/questions/19080499/transparent-background-in-a-tkinter-window
             self.root.wm_attributes('-transparent', True) # do this for mac, but the bg stays black
+            self.root.config(bg='systemTransparent')
         
         self.root.attributes('-topmost', True) # put window on top
         self.root.bind("<Button-1>", self.onLeftClick)
