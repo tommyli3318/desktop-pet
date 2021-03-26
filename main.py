@@ -1,6 +1,7 @@
 import tkinter
 import os
 import random
+from platform import system
 
 class Pet:
     def __init__(self):
@@ -22,7 +23,11 @@ class Pet:
 
         # window configuration
         self.root.overrideredirect(True) # remove UI
-        self.root.wm_attributes('-transparentcolor','black') # transparent bg
+        if system() == 'Windows':
+            self.root.wm_attributes('-transparent','black')
+        else: # platform is Mac/Linux
+            self.root.wm_attributes('-transparent', True) # do this for mac, but the bg stays black
+        
         self.root.attributes('-topmost', True) # put window on top
         self.root.bind("<Button-1>", self.onLeftClick)
         self.root.bind("<Key>", self.onKeyPress)
@@ -63,9 +68,11 @@ class Pet:
     def onLeftClick(self, event):
         print("detected left click")
 
+
     def onKeyPress(self, event):
         if event.char in ('q', 'Q'):
             self.quit()
+    
     
     def move_window(self, curr_animation):
         if curr_animation == 'walk_left':
