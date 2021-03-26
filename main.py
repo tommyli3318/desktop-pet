@@ -21,9 +21,12 @@ class Pet:
         )
 
         # window configuration
-        self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
         self.root.overrideredirect(True) # remove UI
-        self.root.wm_attributes('-transparentcolor','black')
+        self.root.wm_attributes('-transparentcolor','black') # transparent bg
+        self.root.attributes('-topmost', True) # put window on top
+        self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
+        self.label.bind("<Button-1>", self.on_left_click)
+        self.label.bind("<Button-3>", self.on_right_click)
         self.label.pack()
         
         screen_width = self.root.winfo_screenwidth() # width of the entire screen
@@ -38,7 +41,8 @@ class Pet:
         
 
     def update(self, i, curr_animation):
-        print("Curently: %s" % curr_animation)
+        # print("Curently: %s" % curr_animation)
+        self.root.attributes('-topmost', True) # put window on top
         animation_arr = self.animation[curr_animation]
         frame = animation_arr[i]
         self.label.configure(image=frame)
@@ -56,6 +60,12 @@ class Pet:
             self.root.after(self.delay, self.update, i, curr_animation)
 
 
+    def on_left_click(self, event):
+        print("detected left click")
+
+    def on_right_click(self, event):
+        self.quit()        
+    
     def move_window(self, curr_animation):
         if curr_animation == 'walk_left':
             if self.curr_width > self.min_width:
@@ -86,6 +96,11 @@ class Pet:
     def run(self):
         self.root.after(self.delay, self.update, 0, 'idle') # start on idle
         self.root.mainloop()
+    
+    
+    def quit(self):
+        self.root.destroy()
+
 
 if __name__ == '__main__':
     pet = Pet()
