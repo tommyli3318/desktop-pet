@@ -5,20 +5,20 @@ import random
 class Pet:
     def __init__(self):
         self.root = tkinter.Tk() # create window
-        self.delay = 300 # delay in ms
+        self.delay = 200 # delay in ms
         self.pixels_from_right = 200 # change to move the pet's starting position
         self.pixels_from_bottom = 200 # change to move the pet's starting position
+        self.move_speed = 6 # change how fast the pet moves in pixels
 
         # initialize frame arrays
         self.animation = dict(
             idle = [tkinter.PhotoImage(file=os.path.abspath('gifs/idle.gif'), format = 'gif -index %i' % i) for i in range(5)],
             idle_to_sleep = [tkinter.PhotoImage(file=os.path.abspath('gifs/idle-to-sleep.gif'), format = 'gif -index %i' % i) for i in range(8)],
-            sleep = [tkinter.PhotoImage(file=os.path.abspath('gifs/sleep.gif'), format = 'gif -index %i' % i) for i in range(3)],
+            sleep = [tkinter.PhotoImage(file=os.path.abspath('gifs/sleep.gif'), format = 'gif -index %i' % i) for i in range(3)]*3,
             sleep_to_idle = [tkinter.PhotoImage(file=os.path.abspath('gifs/sleep-to-idle.gif'), format = 'gif -index %i' % i) for i in range(8)],
             walk_left = [tkinter.PhotoImage(file=os.path.abspath('gifs/walk-left.gif'), format = 'gif -index %i' % i) for i in range(8)],
             walk_right = [tkinter.PhotoImage(file=os.path.abspath('gifs/walk-right.gif'),format = 'gif -index %i' % i) for i in range(8)]
         )
-
 
         # window configuration
         self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
@@ -59,11 +59,11 @@ class Pet:
     def move_window(self, curr_animation):
         if curr_animation == 'walk_left':
             if self.curr_width > self.min_width:
-                self.curr_width -= 10
+                self.curr_width -= self.move_speed
             
         elif curr_animation == 'walk_right':
             if self.curr_width < self.max_width:
-                self.curr_width += 10
+                self.curr_width += self.move_speed
 
         self.root.geometry('%dx%d+%d+%d' % (100, 100, self.curr_width, self.curr_height))
     
@@ -81,8 +81,7 @@ class Pet:
             return random.choice(['idle', 'walk_left', 'walk_right'])
         elif curr_animation == 'walk_right':
             return random.choice(['idle', 'walk_left', 'walk_right'])
-
-            
+         
     
     def run(self):
         self.root.after(self.delay, self.update, 0, 'idle') # start on idle
