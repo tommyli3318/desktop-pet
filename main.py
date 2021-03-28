@@ -32,6 +32,7 @@ class Pet:
         
         self.root.attributes('-topmost', True) # put window on top
         self.root.bind("<Button-1>", self.onLeftClick)
+        self.root.bind("<Button-2>", self.onRightClick)
         self.root.bind("<Button-3>", self.onRightClick)
         self.root.bind("<Key>", self.onKeyPress)
         self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
