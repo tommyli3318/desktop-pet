@@ -32,8 +32,11 @@ class Pet:
         
         self.root.attributes('-topmost', True) # put window on top
         self.root.bind("<Button-1>", self.onLeftClick)
+        self.root.bind("<Button-3>", self.onRightClick)
         self.root.bind("<Key>", self.onKeyPress)
         self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
+        if system() != 'Windows':
+            self.label.config(bg='systemTransparent')
         self.label.pack()
         
         screen_width = self.root.winfo_screenwidth() # width of the entire screen
@@ -69,6 +72,10 @@ class Pet:
 
     def onLeftClick(self, event):
         print("detected left click")
+    
+    
+    def onRightClick(self, event):
+        self.quit()
 
 
     def onKeyPress(self, event):
@@ -114,6 +121,6 @@ class Pet:
 
 if __name__ == '__main__':
     print('Initializing your desktop pet...')
-    print('To quit, left click on the pet then press Q')
+    print('To quit, right click on the pet')
     pet = Pet()
     pet.run()
