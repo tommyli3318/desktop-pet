@@ -35,7 +35,7 @@ class Pet:
         self.root.bind("<Button-2>", self.onRightClick)
         self.root.bind("<Button-3>", self.onRightClick)
         self.root.bind("<Key>", self.onKeyPress)
-        self.label = tkinter.Label(self.root,bd=0,bg='black') # borderless window
+        self.label = tkinter.Label(self.root,bd=0) # borderless window
         if system() != 'Windows':
             self.label.config(bg='systemTransparent')
         self.label.pack()
